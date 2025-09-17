@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Text, View, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+
+import {
+    Text, View, Image, TextInput, TouchableOpacity,
+    Alert, ActivityIndicator
+} from "react-native";
 import { style } from "./styles";
-import Logo from '../../assets/logo.png';
-import { MaterialIcons, Octicons } from '@expo/vector-icons';
-import { themes } from "../../global/themes";
+import Logo from "../../assets/logo.png";
+import { MaterialIcons, Octicons } from '@expo/vector-icons'
+import { themas } from "../../global/themes"
 import { Input } from "../../components/input";
 import { Button } from "../../components/Button";
 import { useNavigation, NavigationProp } from '@react-navigation/native'
+import BottomRoutes from "../../routes/bottom.routes";
 
 export default function Login() {
 
@@ -24,7 +29,7 @@ export default function Login() {
                 return Alert.alert('Atenção', 'Informe os campos obrigatórios!');
             }
 
-            navigation.navigate("BottomRoutes")
+            navigation.reset({ routes: [{ name: "BottomRoutes" }] })
 
             console.log("Logou!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -34,9 +39,8 @@ export default function Login() {
             setLoading(false);
         }
     }
-
     return (
-        <View style={style.container}>
+        < View style={style.container} >
             <View style={style.boxTop}>
                 <Image
                     source={Logo}
@@ -47,27 +51,27 @@ export default function Login() {
             </View>
             <View style={style.boxMid}>
                 <Input
-                    title="ENDEREÇO DE E-MAIL"
                     value={email}
                     onChangeText={setEmail}
+                    title="ENDEREÇO E-MAIL"
                     IconRight={MaterialIcons}
                     IconRightName="email"
                 />
                 <Input
-                    title="SENHA"
                     value={password}
                     onChangeText={setPassword}
+                    title="SENHA"
                     IconRight={Octicons}
-                    IconRightName={showPassword ? "eye-closed" : "eye"}
+                    IconRightName={showPassword ? "eye-closed" : "eye"} // Logica do olho aberto ao ver a senha
                     secureTextEntry={showPassword}
-                    OnIconRightPress={() => setShowPassword(!showPassword)}
+                    onIconRightPress={() => setShowPassword(!showPassword)}
                 />
             </View>
-            <View style={style.boxBottom}>
+            <View style={style.boxBotton}>
                 <Button text="Entrar" loading={loading} onPress={() => getLogin()} />
             </View>
-            <Text style={style.textBottom}>Não tem conta?
-                <Text style={{ color: themes.colors.primary }}> Crie agora!</Text></Text>
-        </View>
+            <Text style={style.textBotton}>Não tem conta?
+                <Text style={{ color: themas.colors.primary }}> Crie agora!</Text></Text>
+        </View >
     )
 }

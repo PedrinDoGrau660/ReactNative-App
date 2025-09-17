@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
-import { themes } from "../../global/themes";
+import { themas } from "../../global/themes";
 
 export const style = StyleSheet.create({
+
     boxInput: {
         width: '100%',
         height: 40,
@@ -11,24 +12,25 @@ export const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 5,
-        backgroundColor: themes.colors.lightGray,
-        borderColor: themes.colors.lightGray,
+        backgroundColor: themas.colors.lightGray,
+        borderColor: themas.colors.lightGray
     },
     input: {
         height: '100%',
         width: '90%',
         borderRadius: 40,
+        paddingLeft: 5,
     },
     titleInput: {
         marginLeft: 5,
-        color: themes.colors.gray,
-        marginTop: 20,
+        color: themas.colors.gray,
+        marginTop: 20
     },
     Icon: {
-        width: '100%',
-        color: themes.colors.gray,
+        width: '100%'
     },
+    
     Button: {
-        width: '10%',
+        width: '10%'
     }
 })
