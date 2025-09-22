@@ -1,10 +1,10 @@
 import React from "react";
+import { ActivityIndicator, TouchableHighlightProps, TouchableOpacity, Text } from "react-native";
 import { style } from "./style";
-import { ActivityIndicator, Text, TouchableHighlightProps, TouchableOpacity } from "react-native";
 
 type Props = TouchableHighlightProps & {
     text: string,
-    loading?: boolean,
+    loading?: boolean
 }
 
 export function Button({ ...rest }: Props) {
@@ -13,10 +13,7 @@ export function Button({ ...rest }: Props) {
             style={style.button}
             {...rest}
             activeOpacity={0.6}>
-            {rest.loading ? <ActivityIndicator
-                color={'#fff'}
-                size={"small"}
-            /> : <Text style={style.textButton}>
+            {rest.loading ? <ActivityIndicator /> : <Text style={style.textButton}>
                 {rest.text}</Text>}
         </TouchableOpacity>
     )

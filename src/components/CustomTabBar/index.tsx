@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react'
 import { Text, TouchableOpacity, View } from "react-native";
 import { style } from "./styles";
 import { AntDesign, FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { themas } from "../../global/themes";
-import { AuthContextlist } from "../../context/authContext_list";
+import { AuthContextList } from '../../context/authContext_list';
 
 export default ({ state, navigation }: any) => {
 
-    const { onOpen } = useContext<any>(AuthContextlist)
+    const { onOpen } = useContext<any>(AuthContextList)
 
     const go = (screenName: string) => {
         navigation.navigate(screenName)
