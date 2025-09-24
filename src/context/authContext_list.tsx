@@ -1,65 +1,140 @@
-import React, { createContext, useContext, useRef } from "react";
-import { Dimensions,StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { MaterialIcons, AntDesign} from '@expo/vector-icons'
+import React, { createContext, useContext, useRef, useEffect } from "react";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { Modalize } from "react-native-modalize";
-import { style } from "../pages/login/styles";
-
+import { Input } from "../components/input";
+import { themas } from "../global/themes";
+import { Flag } from "../components/flag";
 
 export const AuthContextList: any = createContext({});
+const flags = [
+  { caption: 'urgente', color: themas.colors.red, icon: 'briefcase' },
+  { caption: 'Opcional', color: themas.colors.bluelight, icon: 'user' },];
 
 export const AuthProviderList = (props: any): any => {
 
-    const modalizeRef = useRef<Modalize>(null);
-    const onOpen = () => {
-        modalizeRef?.current?.open();
+  const modalizeRef = useRef<Modalize>(null);
+  const onOpen = () => {
+    modalizeRef?.current?.open();
 
-    }
-    const _container = () => {
-        return (
-          <View style={Styles.container}>
-            <View style={Styles.header}>
-              <TouchableOpacity>
-                <MaterialIcons
-                  name="close"
-                  size={24}
-                />
-                </TouchableOpacity>
-                <Text>Criar Tarefa</Text>
+  }
 
-                <TouchableOpacity>
-                <AntDesign
-                  name="check"
-                  size={30}
-                />
-                </TouchableOpacity>
-            </View>
-          </View>
-        )
+  useEffect(() => {
+    onOpen()
+  }, [])
 
-    }
+  const _renderFlags = () => {
     return (
-        <AuthContextList.Provider value={{ onOpen }}>
-            {props.children}
-            <Modalize
-                ref={modalizeRef}
-               // modalHeight={Dimensions.get('window').height / 1.3}
-               childrenStyle={{height: Dimensions.get('window').height / 1.3}}
-               adjustToContentHeight={true}
-            >
-            {_container()}
-            </Modalize>
-        </AuthContextList.Provider>
+      flags.map((item, index) => {
+<TouchableOpacity>
+  <Flag
+    caption={item.caption}
+    color={item.color}
+  />
+</TouchableOpacity>
+      })
+      
+
     )
+  }
+
+  const _container = () => {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity>
+            <MaterialIcons
+              name="close"
+              size={30}
+            />
+          </TouchableOpacity>
+
+          <Text style={styles.title}>Criar Tarefa</Text>
+
+          <TouchableOpacity>
+            <AntDesign
+              name="check"
+              size={30}
+            />
+          </TouchableOpacity>
+
+        </View>
+        <View style={styles.content}>
+          <Input
+            title="Titulo"
+            labelStyle={styles.label}
+          />
+          <Input
+            title="Descrição"
+            labelStyle={styles.label}
+            height={100}
+            multiline
+            numberOfLines={5}
+          />
+        </View>
+        <View style={{ width: '40%' }}>
+          <Input
+            title="Tempo limite:"
+            labelStyle={styles.label}
+          />
+        </View>
+        <View style={styles.containerFlag}>
+          <Text style={styles.label}>Flags:</Text>
+          <View style={styles.rowFlags}>
+
+          </View>
+        </View>
+      </View>
+    )
+  }
+  return (
+    <AuthContextList.Provider value={{ onOpen }}>
+      {props.children}
+      <Modalize
+        ref={modalizeRef}
+        // modalHeight={Dimensions.get('window').height / 1.3}
+        childrenStyle={{ height: Dimensions.get('window').height / 1.3 }}
+        adjustToContentHeight={true}
+      >
+        {_container()}
+      </Modalize>
+    </AuthContextList.Provider>
+  )
 }
 
 export const useAuth = () => useContext(AuthContextList);
-
-export const Styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-  })
+export const styles = StyleSheet.create({
+  container: {
+    width: '100%'
+  },
+  header: {
+    width: '100%',
+    height: 40,
+    paddingHorizontal: 40,
+    flexDirection: 'row',
+    marginTop: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  content: {
+    width: '100%',
+    paddingHorizontal: 20
+  },
+  containerFlag: {
+    width: '100%',
+    padding: 10
+  },
+  label: {
+    fontWeight: 'bold',
+    color: '#000'
+  },
+  rowFlags: {
+    flexDirection: 'row',
+    marginTop: 10,
+    justifyContent: 'space-between'
+  }
+})
