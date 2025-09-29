@@ -5,22 +5,24 @@ import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
 import { themas } from "../global/themes";
 import { Flag } from "../components/flag";
+import CustomDateTimePicker from "../components/CustomDateTimePicker";
 
 export const AuthContextList: any = createContext({});
 
 const flags = [
-    { caption: 'Urgente',   color: themas.colors.red },
+    { caption: 'Urgente', color: themas.colors.red },
     { caption: 'Opcional', color: themas.colors.blueLight }
 ];
+
 
 export const AuthProviderList = (props: any): any => {
 
     const modalizeRef = useRef<Modalize>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedFlag, setSelect] = useState('Urgente');
+    const [selectedFlag, setSelected] = useState('Urgente');
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedTimed, setSelectedTime] = useState(new Date());
+    const [selectedTime, setSelectedTime] = useState(new Date());
 
 
     const onOpen = () => {
@@ -42,7 +44,7 @@ export const AuthProviderList = (props: any): any => {
                     <Flag
                         caption={item.caption}
                         color={item.color}
-                        selected
+                    //selected
                     />
                 </TouchableOpacity>
             ))
@@ -51,10 +53,11 @@ export const AuthProviderList = (props: any): any => {
 
     const _container = () => {
         return (
-           
-           <KeyboardAvoidingView
-           style={styles.container}
-           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            >
+
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => onClose()}>
                         <MaterialIcons
@@ -91,10 +94,15 @@ export const AuthProviderList = (props: any): any => {
                     />
                 </View>
                 <View style={{ width: '40%' }}>
-                    <Input
+                    {/* <Input
                         title="Tempo limite:"
                         labelStyle={styles.label}
-
+                    /> */}
+                    <CustomDateTimePicker
+                        onDateChange={() => {}}
+                        setShow={() => {}}
+                        show={true}
+                        type={'date'}
                     />
                 </View>
                 <View style={styles.containerFlag}>
