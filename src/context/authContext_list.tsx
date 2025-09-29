@@ -4,7 +4,7 @@ import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
 import { themas } from "../global/themes";
-import { Flag } from "../components/flag";
+import { Flag } from "../components/Flag";
 import CustomDateTimePicker from "../components/CustomDateTimePicker";
 
 export const AuthContextList: any = createContext({});
@@ -55,9 +55,9 @@ export const AuthProviderList = (props: any): any => {
     const handleDateChange = (date) => {
         setSelectedDate(date);
     }
-    const handleTimeChange = (time) => {
-        setSelectedTime(time);
-
+    const handleTimeChange = (date) => {
+        setSelected(date);
+    }
     const _container = () => {
         return (
             <KeyboardAvoidingView
@@ -100,29 +100,29 @@ export const AuthProviderList = (props: any): any => {
                         onChangeText={setDescription}
                     />
                 </View>
-                <View style={{  }}>
+                <View style={{ width: '40%' }}>
                     {/* <Input
                         title="Tempo limite:"
                         labelStyle={styles.label}
                     /> */}
-                    <View style={{flexDirection: 'row', gap: 10, paddingHorizontal: 20, marginBottom: 20, width: '100%'}}>
+                    <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
                         <TouchableOpacity onPress={() => setShowDatePicker(true)} style={{ width: 200 }}>
-                            <Input 
-                            title="Data Limite:"
-                            labelStyle={styles.label}
-                            editable={false}
-                            value={selectedDate.toLocaleDateString()}
-                            onPress={() => setShowDatePicker(true)}
-                            />
-                            <TouchableOpacity style={{right: 10, top: 30, width:120, }}>
-                                <Input 
-                                title="Hora Limite:"
+                            <Input
+                                title="Data Limite"
                                 labelStyle={styles.label}
                                 editable={false}
-                                value={selectedTime.toLocaleTimeString()}
-                                onPress={() => setShowTimePicker(true)}
-                                />
-                            </TouchableOpacity>
+                                value={selectedDate.toLocaleDateString()}
+                                onPress={() => setShowDatePicker(true)}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{width: 120}} onPress={() => setShowTimePicker(true)}>
+                            <Input 
+                            title="Hora Limite"
+                            labelStyle={styles.label}
+                            editable={false}
+                            value={selectedTime.toLocaleTimeString()}
+                            onPress={() => setShowTimePicker(true)}
+                            />
                         </TouchableOpacity>
                     </View>
                     <CustomDateTimePicker
@@ -135,7 +135,7 @@ export const AuthProviderList = (props: any): any => {
                         onDateChange={handleTimeChange}
                         setShow={setShowTimePicker}
                         show={showTimePicker}
-                        type={'date'}
+                        type={'time'}
                     />
                 </View>
                 <View style={styles.containerFlag}>
