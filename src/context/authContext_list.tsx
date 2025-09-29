@@ -100,11 +100,31 @@ export const AuthProviderList = (props: any): any => {
                         onChangeText={setDescription}
                     />
                 </View>
-                <View style={{ width: '40%' }}>
+                <View style={{  }}>
                     {/* <Input
                         title="Tempo limite:"
                         labelStyle={styles.label}
                     /> */}
+                    <View style={{flexDirection: 'row', gap: 10, paddingHorizontal: 20, marginBottom: 20, width: '100%'}}>
+                        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={{ width: 200 }}>
+                            <Input 
+                            title="Data Limite:"
+                            labelStyle={styles.label}
+                            editable={false}
+                            value={selectedDate.toLocaleDateString()}
+                            onPress={() => setShowDatePicker(true)}
+                            />
+                            <TouchableOpacity style={{right: 10, top: 30, width:120, }}>
+                                <Input 
+                                title="Hora Limite:"
+                                labelStyle={styles.label}
+                                editable={false}
+                                value={selectedTime.toLocaleTimeString()}
+                                onPress={() => setShowTimePicker(true)}
+                                />
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
                     <CustomDateTimePicker
                         onDateChange={handleDateChange}
                         setShow={setShowDatePicker}
