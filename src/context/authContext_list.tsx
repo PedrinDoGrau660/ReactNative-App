@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useRef, useEffect, useState } from "react";
-import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+    Alert,
+    Dimensions, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity,
+    View
+} from "react-native";
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
 import { themas } from "../global/themes";
 import { Flag } from "../components/flag";
 import CustomDateTimePicker from "../components/CustomDateTimePicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AuthContextList: any = createContext({});
 
@@ -36,22 +41,18 @@ export const AuthProviderList = (props: any): any => {
         modalizeRef?.current?.close();
     }
 
-    useEffect(() => {
-        onOpen()
-    }, [])
-
     const _renderFlags = () => {
         return (
             flags.map((item, index) => (
                 <TouchableOpacity key={index}
-                    onPress={() => setSelectedFlag(item.caption)
-
-                    }
-                    >
+                    onPress={() => {
+                        setSelectedFlag(item.caption)
+                    }}
+                >
                     <Flag
                         caption={item.caption}
                         color={item.color}
-                        selected={selectedFlag === item.caption}
+                        selected={item.caption == selectedFlag}
                     />
                 </TouchableOpacity>
             ))
@@ -63,23 +64,35 @@ export const AuthProviderList = (props: any): any => {
     const handleTimeChange = (date) => {
         setSelectedTime(date);
     }
-    const handleSave = () => {
-        // Lógica para salvar a tarefa
-         const newItem = {
-            item: Date.now(),
-            title: 'Titulo',
-            description: 'Descrição',
-            flag: 'Flags',
-            timeLimite: new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                selectedDate.getDate(),
-                selectedTime.getHours(),
-                selectedTime.getMinutes(),
-            ).toISOString()
-         }
-         console.log(newItem);
+
+    const handleSave = async () => {
+        if (!title || !description || !selectedFlag) {
+            return Alert.alert('Atenção', 'Preencha os campos corretamente!');
+        }
+        try {
+            const newItem = {
+                item: Date.now(),
+                title,
+                description,
+                flags: selectedFlag,
+                timeLimite: new Date(
+                    selectedDate.getFullYear(),
+                    selectedDate.getMonth(),
+                    selectedDate.getDate(),
+                    selectedTime.getHours(),
+                    selectedTime.getMinutes()
+                ).toISOString(),
+            }
+
+            await AsyncStorage.setItem('tasklist', JSON.stringify(newItem))
+
+        } catch (error) {
+            console.log("Erro ao salvar o item", error)
+        }
+
     }
+
+
     const _container = () => {
         return (
             <KeyboardAvoidingView
@@ -97,7 +110,7 @@ export const AuthProviderList = (props: any): any => {
 
                     <Text style={styles.title}>Criar Tarefa</Text>
 
-                    <TouchableOpacity onPress={() =>  handleSave() }>
+                    <TouchableOpacity onPress={() => handleSave()}>
                         <AntDesign
                             name="check"
                             size={30}
@@ -120,6 +133,7 @@ export const AuthProviderList = (props: any): any => {
                         numberOfLines={5}
                         value={description}
                         onChangeText={setDescription}
+                        textAlignVertical="top"
                     />
                 </View>
                 <View style={{ width: '40%' }}>
@@ -137,13 +151,13 @@ export const AuthProviderList = (props: any): any => {
                                 onPress={() => setShowDatePicker(true)}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width: 120}} onPress={() => setShowTimePicker(true)}>
-                            <Input 
-                            title="Hora Limite"
-                            labelStyle={styles.label}
-                            editable={false}
-                            value={selectedTime.toLocaleTimeString()}
-                            onPress={() => setShowTimePicker(true)}
+                        <TouchableOpacity style={{ width: 120 }} onPress={() => setShowTimePicker(true)}>
+                            <Input
+                                title="Hora Limite"
+                                labelStyle={styles.label}
+                                editable={false}
+                                value={selectedTime.toLocaleTimeString()}
+                                onPress={() => setShowTimePicker(true)}
                             />
                         </TouchableOpacity>
                     </View>
