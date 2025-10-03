@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useEffect, useState } from "react";
+import React, { createContext, useContext, useRef, useEffect, useState, use } from "react";
 import {
     Alert,
     Dimensions, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity,
@@ -31,6 +31,24 @@ export const AuthProviderList = (props: any): any => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [item, setItem] = useState(0);
+    const [taskList, setTaskList] = useState([]);   
+
+   // useEffect(() => {
+     //   const fetchData = async () => {
+     //       try {
+      //          const storageData = await AsyncStorage.getItem('tasklist');
+       //         const parsedData = storageData ? JSON.parse(storageData) : [];
+        ///        setTaskList(parsedData);
+        //    } catch (error) {
+        //        console.log("Erro ao buscar os dados", error)
+       //     }
+      //  }
+   //     fetchData();
+ //   }, [item])
+
+ useEffect(() => {
+    console.log('Task List updated:', taskList);
+}, [taskList]);
 
 
     const onOpen = () => {
@@ -84,15 +102,27 @@ export const AuthProviderList = (props: any): any => {
                 ).toISOString(),
             }
             const storageData = await AsyncStorage.getItem('tasklist');
-            console.log(storageData)
+           // console.log(storageData)
             let taskList = storageData ? JSON.parse(storageData) : [];
             taskList.push(newItem);
             await AsyncStorage.setItem('tasklist', JSON.stringify(taskList))
+
+            setTaskList(taskList)
+            setDate()
+            onClose()
 
         } catch (error) {
             console.log("Erro ao salvar o item", error)
         }
 
+    }
+    const setDate = () => {
+        setTitle(''),
+        setDescription(''),
+        setSelectedFlag('Urgente'),
+        setItem(0),
+        setSelectedDate(new Date()),
+        setSelectedTime(new Date())
     }
 
 
@@ -187,7 +217,7 @@ export const AuthProviderList = (props: any): any => {
         )
     }
     return (
-        <AuthContextList.Provider value={{ onOpen }}>
+        <AuthContextList.Provider value={{ onOpen, taskList }}>
             {props.children}
             <Modalize
                 ref={modalizeRef}
